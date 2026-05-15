@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en" class="no-js">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+
+    <title>Fovae | Portfolio</title>
+    <meta name="description"
+        content="Creative Design & Visual Art Portfolio by Fovae. Inspired by Steam aesthetics and Neon Future.">
+
+    <meta property="og:type" content="website">
+    <meta property="og:title" content="Fovae | Portfolio">
+    <meta property="og:description" content="Digital Art & Visual Storytelling.">
+    <meta property="og:image" content="fm-i/og-image.png">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;500;700&family=JetBrains+Mono:wght@300;400&display=swap"
+        rel="stylesheet">
+
+    <link rel="icon" href="fm-i/favicon32.png" sizes="32x32">
+    <link rel="icon" href="fm-i/icon.svg" type="image/svg+xml">
+    <link rel="apple-touch-icon" href="fm-i/icon.png">
+    <meta name="theme-color" content="#000000">
+    <link rel="stylesheet" href="decor.css">
+</head>
+
+<body>
+    <!--mv-back-->
+    <div class="mv-back-wrap">
+        <video id="bgVideo" autoplay muted loop playsinline preload="auto" poster="/mv-back/symbols-bg.png">
+            <source src="/mv-back/symbols-bg.webm" type="video/webm">
+            <source src="/mv-back/symbols-bg.mp4" type="video/mp4">
+        </video>
+        <div id="bgOverlay" class="mv-back-over"></div>
+    </div>
+
+    <header class="main-nav">
+        <div class="container">
+            <div class="logo">
+                <svg class="brand-core-svg desktop-core" viewBox="0 0 44 44" xmlns="http://www.w3.org/2000/svg">
+                    <circle class="core-glow" cx="22" cy="22" r="14" />
+                    <path class="core-half left-side" d="M22,8 A14,14 0 0,0 22,36 Z" />
+                    <path class="core-half right-side" d="M22,8 A14,14 0 0,1 22,36" fill="none" stroke-width="2" />
+                </svg>
+                <span class="logo-text">FOVAE</span>
+            </div>
+            <nav>
+                <a href="#">Workshop</a>
+                <a href="#">Illustrations</a>
+                <a href="#">Reviews</a>
+            </nav>
+            <button class="burger-btn" aria-label="Menu">
+                <svg class="burger-core-svg" viewBox="0 0 44 44" xmlns="http://www.w3.org/2000/svg">
+                    <circle class="core-glow" cx="22" cy="22" r="14" />
+                    <path class="core-half left-side" d="M22,8 A14,14 0 0,0 22,36 Z" />
+                    <path class="core-half right-side" d="M22,8 A14,14 0 0,1 22,36" fill="none" stroke-width="2" />
+                    <path class="core-cross line-1" d="M15,15 L29,29" />
+                    <path class="core-cross line-2" d="M29,15 L15,29" />
+                </svg>
+            </button>
+        </div>
+    </header>
+
+    <main>
+        <section class="hero-profile">
+            <div class="container">
+                <div class="header-flex">
+                </div>
+            </div>
+        </section>
+
+        <section class="artwork-showcase">
+            <div class="container">
+            </div>
+        </section>
+    </main>
+
+
+    <div class="cyber-hud-menu">
+        <div class="hud-scanline"></div>
+        <div class="hud-frame-line top-left"></div>
+        <div class="hud-frame-line bottom-right"></div>
+
+        <nav class="hud-nav">
+            <a href="#" class="hud-link" data-num="01">Workshop</a>
+            <a href="#" class="hud-link" data-num="02">Illustrations</a>
+            <a href="#" class="hud-link" data-num="03">Reviews</a>
+        </nav>
+    </div>
+    <script src="prog.js"></script>
+</body>
+
+</html>
