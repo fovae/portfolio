@@ -6,7 +6,8 @@
     --pink-bright: #ffffff;
 
     --bg-dark: #000;
-    --text: #fff;
+    --text: #fff3ff;
+    --subtext: #a0a0a0;
 
     --font-header: 'Space Grotesk', sans-serif;
     --font-mono: 'JetBrains Mono', monospace;
@@ -190,8 +191,11 @@ body.hud-open .hud-link:nth-child(3) { transition-delay: .35s; }
 
 .mc-hero-g { display: grid; grid-template-columns: 1fr 340px; gap: 24px; background: transparent !important; }
 @media (max-width: 968px) { .mc-hero-g { grid-template-columns: 1fr; gap: 20px; } }
-/*main styles glass*/
-.mc-prof-h, .mc-rank-plate, .mc-status-card {
+/*glass styles and animations*/
+.mc-prof-h,
+.mc-rank-plate, 
+.mc-status-card,
+.mc-soc-box {
     background: rgba(10, 10, 10, .3) !important;
     border-radius: 16px;
     border: 1px solid rgba(255, 255, 255, .08) !important;
@@ -213,9 +217,17 @@ body.hud-open .hud-link:nth-child(3) { transition-delay: .35s; }
 /*sync*/
 .mc-prof-h { transform: translate3d(-60px, 0, 0); }
 .mc-prof-h.animate-in { opacity: 1; transform: translate3d(0, 0, 0); }
-
-.mc-rank-plate, .mc-status-card { transform: translate3d(60px, 0, 0); }
-.mc-rank-plate.animate-in, .mc-status-card.animate-in { opacity: 1; transform: translate3d(0, 0, 0); }
+/*ease-in animations*/
+.mc-rank-plate,
+.mc-status-card,
+.mc-soc-box { 
+    transform: translate3d(60px, 0, 0);
+}
+.mc-rank-plate.animate-in,
+.mc-status-card.animate-in, 
+.mc-soc-box.animate-in { 
+    opacity: 1; transform: translate3d(0, 0, 0); 
+}
 /*global*/
 /*leftside*/
 .mc-prof-h { display: flex; gap: 24px; align-items: center; padding: 24px; }
@@ -225,16 +237,16 @@ body.hud-open .hud-link:nth-child(3) { transition-delay: .35s; }
 .mc-user-meta { display: flex; flex-direction: column; align-items: flex-start; gap: 12px; }
 .mc-user-name { font-family: var(--font-header); font-size: 2rem; font-weight: 700; text-transform: uppercase; color: var(--text); margin: 0; }
 .mc-country { font-size: 0.7rem; color: var(--pink-accent); background: rgba(255, 0, 255, 0.05); padding: 2px 8px; border-radius: 20px; border: 1px solid var(--pink-soft); }
-.mc-user-quote { font-family: var(--font-mono); font-size: 0.8rem; color: #888; margin: 4px 0 0 0; line-height: 1.4; }
+.mc-user-quote { font-family: var(--font-mono); font-size: 0.8rem; color: var(--subtext); margin: 4px 0 0 0; line-height: 1.4; }
 /*rightside*/
 .mc-rank-plate { padding: 20px; }
 .mc-rank-h { display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid rgba(255, 255, 255, 0.05); padding-bottom: 12px; }
-.mc-rank-lbl { font-size: 0.75rem; letter-spacing: 2px; color: #666; font-weight: bold; }
+.mc-rank-lbl { font-size: 0.75rem; letter-spacing: 2px; color: var(--text); font-weight: bold; }
 .mc-rank-circle { width: 34px; height: 34px; border-radius: 50%; border: 2px solid var(--pink-neon); display: flex; align-items: center; justify-content: center; box-shadow: 0 0 10px var(--pink-soft); }
 .mc-rank-num { font-size: 0.85rem; font-weight: bold; color: var(--text); }
 .mc-spec-badge { margin-top: 14px; display: flex; flex-direction: column; gap: 8px; }
 .mc-spec-lines { display: flex; flex-direction: column; gap: 4px; }
-.mc-spec-ln { font-size: 0.65rem; letter-spacing: 1px; font-weight: bold; color: #aaa; }
+.mc-spec-ln { font-size: 0.65rem; letter-spacing: 1px; font-weight: bold; color: var(--subtext); }
 .mc-load-bar { width: 100%; height: 3px; background: rgba(255, 255, 255, 0.05); border-radius: 2px; overflow: hidden; }
 .mc-load-progress { width: 78%; height: 100%; background: var(--pink-neon); box-shadow: 0 0 8px var(--pink-neon); }
 /*DUB time*/
@@ -244,13 +256,11 @@ body.hud-open .hud-link:nth-child(3) { transition-delay: .35s; }
 .mc-status-txt { display: flex; flex-direction: column; gap: 2px; }
 .mc-status-ttl { font-size: 0.75rem; font-weight: bold; letter-spacing: 1px; color: var(--text); }
 .mc-status-msg { font-size: 0.75rem; color: var(--pink-neon); text-shadow: 0 0 5px var(--pink-soft); }
-.mc-status-clk { font-size: 0.7rem; color: #777; }
+.mc-status-clk { font-size: 0.65rem; font-weight: bold; color: var(--subtext);}
 /*system*/
 main, section, aside { background-color: transparent !important; }
 
-/* =========================================================
-   SECURE LINKS MODULE (Блок соцсетей FOVAE)
-========================================================= */
+/*social links*/
 .mc-soc-box {
     margin-top: 16px;
     padding: 16px 20px;
@@ -263,7 +273,7 @@ main, section, aside { background-color: transparent !important; }
 .mc-soc-ttl {
     font-size: 0.65rem;
     letter-spacing: 2px;
-    color: #666;
+    color: var(--text);
     font-weight: bold;
     text-transform: uppercase;
 }

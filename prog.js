@@ -87,6 +87,33 @@ document.addEventListener('DOMContentLoaded', () => {
                 magneticTarget = null;
             }
         });
+        document.addEventListener('click', (e) => {
+            const target = e.target.closest(targetsSelector);
+            if (!target) return;
+
+            isHovered = false;
+            cursor.classList.remove('is-hover');
+
+            if (isMagnetic && magneticTarget) {
+                magneticTarget.style.transform = 'translate3d(0, 0, 0)';
+                magneticTarget.style.transition = 'transform 0.4s cubic-bezier(.23, 1, .32, 1)';
+                isMagnetic = false;
+                cursor.classList.remove('is-magnetic');
+                magneticTarget = null;
+            }
+        });
+        window.addEventListener('blur', () => {
+            isHovered = false;
+            cursor.classList.remove('is-hover');
+
+            if (isMagnetic && magneticTarget) {
+                magneticTarget.style.transform = 'translate3d(0, 0, 0)';
+                magneticTarget.style.transition = 'transform 0.4s cubic-bezier(.23, 1, .32, 1)';
+                isMagnetic = false;
+                cursor.classList.remove('is-magnetic');
+                magneticTarget = null;
+            }
+        });
     }
 
     //mv-back and animations
@@ -94,14 +121,17 @@ document.addEventListener('DOMContentLoaded', () => {
     const overlay = document.getElementById('bgOverlay');
     const header = document.querySelector('header.main-nav');
 
+    //ease-in animations
     const profH = document.querySelector('.mc-prof-h');
     const rankPlate = document.querySelector('.mc-rank-plate');
     const statusCard = document.querySelector('.mc-status-card');
+    const socBox = document.querySelector('.mc-soc-box');
 
     function animateProfileBlocks() {
         if (profH) setTimeout(() => profH.classList.add('animate-in'), 350);
         if (rankPlate) setTimeout(() => rankPlate.classList.add('animate-in'), 600);
         if (statusCard) setTimeout(() => statusCard.classList.add('animate-in'), 800);
+        if (socBox) setTimeout(() => socBox.classList.add('animate-in'), 1000);
     }
 
     if (video && overlay) {
