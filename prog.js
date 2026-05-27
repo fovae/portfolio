@@ -8,75 +8,84 @@ window.addEventListener('load', () => {
 
 document.addEventListener('DOMContentLoaded', () => {
 
-    //cursor physics
     const cursor = document.querySelector('.mc-cursor');
     const core = document.querySelector('.mc-cur-core');
     const sight = document.querySelector('.mc-cur-sight');
-    //cursor logic
+
     if (cursor && core && sight && window.innerWidth > 1024) {
         let targetX = 0, targetY = 0;
         let coreX = 0, coreY = 0;
         let sightX = 0, sightY = 0;
 
-        const lerpFactor = 0.20; 
+        // Тайминги для независимого от FPS плавного движения (LERP)
+        let lastTime = performance.now();
+        const BASE_LERP = 0.12; 
 
         let isHovered = false;
         let isMagnetic = false;
-        let magneticTarget = null;
+        
+        // Объект для кэширования геометрии магнитной цели
+        let magneticData = {
+            el: null,
+            centerX: 0,
+            centerY: 0
+        };
 
-        window.addEventListener('mousemove', (e) => {
+        window.addEventListener('pointermove', (e) => {
             targetX = e.clientX;
             targetY = e.clientY;
         }, { passive: true });
 
-        // cursor reset
         function resetCursorState() {
+            if (!isHovered && !isMagnetic) return; // избегаем лишней работы с DOM
+            
             isHovered = false;
             cursor.classList.remove('is-hover');
 
-            if (isMagnetic && magneticTarget) {
-                magneticTarget.style.transform = 'translate3d(0, 0, 0)';
+            if (isMagnetic && magneticData.el) {
+                magneticData.el.style.transform = '';
                 isMagnetic = false;
                 cursor.classList.remove('is-magnetic');
-                magneticTarget = null;
+                magneticData.el = null;
             }
         }
 
-        // 60fps
-        function updateCursorPhysics() {
-            // lerp
-            coreX += (targetX - coreX) * lerpFactor;
-            coreY += (targetY - coreY) * lerpFactor;
+        function updateCursorPhysics(now) {
+            // Вычисляем дельту времени для выравнивания скорости на 60Hz/144Hz/240Hz
+            const deltaTime = Math.min((now - lastTime) / 16.666, 3); 
+            lastTime = now;
 
-            sightX += (targetX - sightX) * (lerpFactor * 0.6); // Прицел отстает чуть сильнее для глубины
-            sightY += (targetY - sightY) * (lerpFactor * 0.6);
+            // Корректируем коэффициент интерполяции под герцовку экрана
+            const actualCoreLerp = 1 - Math.pow(1 - BASE_LERP, deltaTime);
+            const actualSightLerp = 1 - Math.pow(1 - (BASE_LERP * 0.7), deltaTime);
 
-            if (isMagnetic && magneticTarget) {
-                const rect = magneticTarget.getBoundingClientRect();
-                const centerX = rect.left + rect.width / 2;
-                const centerY = rect.top + rect.height / 2;
+            coreX += (targetX - coreX) * actualCoreLerp;
+            coreY += (targetY - coreY) * actualCoreLerp;
 
-                // magnification
-                const pullX = (targetX - centerX) * 0.2;
-                const pullY = (targetY - centerY) * 0.2;
+            sightX += (targetX - sightX) * actualSightLerp;
+            sightY += (targetY - sightY) * actualSightLerp;
 
-                magneticTarget.style.transform = `translate3d(${pullX}px, ${pullY}px, 0)`;
+            // Логика магнетизма без вызова getBoundingClientRect внутри кадра!
+            if (isMagnetic && magneticData.el) {
+                const pullX = (targetX - magneticData.centerX) * 0.28;
+                const pullY = (targetY - magneticData.centerY) * 0.28;
+
+                magneticData.el.style.transform = `translate3d(${pullX}px, ${pullY}px, 0)`;
             }
 
-            // positioning
+            // Рендеринг позиций слоев курсора
             core.style.transform = `translate3d(${coreX}px, ${coreY}px, 0) translate3d(-50%, -50%, 0)`;
-            sight.style.transform = `translate3d(${sightX}px, ${sightY}px, 0) translate3d(-50%, -50%, 0) ${isHovered ? 'rotate(45deg)' : ''}`;
+            sight.style.transform = `translate3d(${sightX}px, ${sightY}px, 0) translate3d(-50%, -50%, 0) ${isHovered ? 'rotate(45deg) scale(1.2)' : ''}`;
 
             requestAnimationFrame(updateCursorPhysics);
         }
         
-        // animation
         requestAnimationFrame(updateCursorPhysics);
 
         const targetsSelector = 'a, button, .mc-avatar-w, .mc-rank-circle, .mc-soc-item, .burger-btn';
 
-        // delegation
-        document.addEventListener('mouseover', (e) => {
+        // Оптимизированный захват наведения через pointerover
+        document.addEventListener('pointerover', (e) => {
             const target = e.target.closest(targetsSelector);
             if (!target) return;
 
@@ -86,19 +95,28 @@ document.addEventListener('DOMContentLoaded', () => {
             if (target.matches('button, .mc-avatar-w, .mc-rank-circle, .burger-btn')) {
                 isMagnetic = true;
                 cursor.classList.add('is-magnetic');
-                magneticTarget = target;
+                
+                // Считаем геометрию ОДИН раз при наведении, сохраняя FPS!
+                const rect = target.getBoundingClientRect();
+                magneticData.el = target;
+                magneticData.centerX = rect.left + rect.width / 2;
+                magneticData.centerY = rect.top + rect.height / 2;
             }
         });
 
-        document.addEventListener('mouseout', (e) => {
-            if (e.target.closest(targetsSelector)) {
+        // Жесткий и надежный сброс при выходе за пределы интерактивного элемента
+        document.addEventListener('pointerout', (e) => {
+            const target = e.target.closest(targetsSelector);
+            // Если мы уходим с таргет-элемента вообще наружу
+            if (target && !e.relatedTarget?.closest(targetsSelector)) {
                 resetCursorState();
             }
         });
 
         document.addEventListener('click', (e) => {
             if (e.target.closest(targetsSelector)) {
-                resetCursorState();
+                // Плавный сброс, чтобы не ломать анимацию клика
+                setTimeout(resetCursorState, 50); 
             }
         });
 
