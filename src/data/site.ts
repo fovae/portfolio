@@ -7,8 +7,7 @@ export const site = {
     'Fovae is a frontend developer and UX/UI designer in Dublin. Offline-first PWAs, design systems and neon worlds in Roblox. Case studies: Project: SOMN and Simple Training.',
   headline: 'Frontend developer & UX/UI designer',
   tagline:
-    'I design and build interfaces that feel fast and look deliberate: offline-first web apps, design systems, and neon worlds in Roblox.',
-  motto: 'Spec first, system second, real devices before anything ships.',
+    'Offline-first web apps, design systems and neon worlds in Roblox. Built to feel fast, tested on real devices.',
   location: 'Dublin, IE',
   timeZone: 'Europe/Dublin',
   status: 'AVAILABLE',

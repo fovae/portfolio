@@ -14,22 +14,23 @@ const featured = projects[0];
     <div class="wrap hero-grid">
       <div class="hero-main">
         <div class="prof glass" data-reveal="left" style="--i:1">
-          <div class="mc-avatar-w">
-            <Avatar />
-          </div>
-          <div class="prof-info">
-            <div class="prof-name-row">
-              <h1 class="prof-name">{site.name}</h1>
-              <span class="chip">{site.location}</span>
+          <div class="prof-head">
+            <div class="mc-avatar-w"><Avatar /></div>
+            <div class="prof-id">
+              <div class="prof-name-row">
+                <h1 class="prof-name">{site.name}</h1>
+                <span class="chip">{site.location}</span>
+              </div>
+              <p class="prof-role">{site.headline}</p>
             </div>
-            <p class="prof-role">{site.headline}</p>
-            <p class="prof-tag">{site.tagline}</p>
-            <p class="prof-motto">&gt; {site.motto}<span class="blink" aria-hidden="true">_</span></p>
-            <p class="prof-quote" lang="ja">宿命を越えて... それ、完成に惚れた .</p>
+          </div>
+          <p class="prof-tag">{site.tagline}</p>
+          <div class="prof-foot">
             <div class="cta-row">
               <a class="btn primary" href="#projects">View projects</a>
               <a class="btn" href="#contact">Contact</a>
             </div>
+            <p class="prof-quote" lang="ja">宿命を越えて... それ、完成に惚れた .</p>
           </div>
         </div>
 
