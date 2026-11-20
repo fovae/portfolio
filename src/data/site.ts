@@ -1,4 +1,5 @@
 import type { IconName } from './icons';
+import { url } from '../lib/url';
 
 export const site = {
   name: 'fovae',
@@ -14,10 +15,10 @@ export const site = {
 } as const;
 
 export const nav = [
-  { label: 'Projects', href: '/#projects' },
-  { label: 'Process', href: '/#process' },
-  { label: 'Stack', href: '/#stack' },
-  { label: 'Contact', href: '/#contact' },
+  { label: 'Projects', href: url('/#projects') },
+  { label: 'Process', href: url('/#process') },
+  { label: 'Stack', href: url('/#stack') },
+  { label: 'Contact', href: url('/#contact') },
 ] as const;
 
 /** Direct lines, shown as rows in the Contact section. */

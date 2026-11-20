@@ -1,4 +1,5 @@
 ---
+import { url } from '../lib/url';
 import { Picture, getImage } from 'astro:assets';
 import Base from '../layouts/Base.astro';
 import Cover from './Cover.astro';
@@ -19,7 +20,7 @@ const sec = () => String(++n).padStart(2, '0');
 <Base title={`${p.title} | Fovae`} description={p.summary}>
   <section class="case-hero">
     <div class="wrap">
-      <a class="back" href="/#projects">&lt; All projects</a>
+      <a class="back" href={url('/#projects')}>&lt; All projects</a>
       <div class="pcard-top" style="margin-top:8px">
         <span class="kicker">{p.kicker}</span>
         <span class={`badge ${p.status === 'LIVE' ? 'live' : ''}`}>{p.status}</span>
@@ -99,8 +100,8 @@ const sec = () => String(++n).padStart(2, '0');
 
   <section class="section">
     <div class="wrap pager">
-      <a class="pager-link glass" href={`/projects/${prev.slug}/`}><span>&lt; Previous</span><strong>{prev.title}</strong></a>
-      <a class="pager-link glass next" href={`/projects/${next.slug}/`}><span>Next &gt;</span><strong>{next.title}</strong></a>
+      <a class="pager-link glass" href={url(`/projects/${prev.slug}/`)}><span>&lt; Previous</span><strong>{prev.title}</strong></a>
+      <a class="pager-link glass next" href={url(`/projects/${next.slug}/`)}><span>Next &gt;</span><strong>{next.title}</strong></a>
     </div>
   </section>
 </Base>

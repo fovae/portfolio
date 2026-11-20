@@ -1,10 +1,11 @@
 ---
+import { url } from '../lib/url';
 import Logo from './Logo.astro';
 import { nav } from '../data/site';
 ---
 <header class="main-nav" id="top-nav">
   <div class="container">
-    <a class="logo" href="/" aria-label="Fovae, home">
+    <a class="logo" href={url('/')} aria-label="Fovae, home">
       <Logo class="desktop-core" />
       <span class="logo-text">FOVAE</span>
     </a>

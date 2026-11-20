@@ -1,11 +1,12 @@
 ---
+import { url } from '../lib/url';
 import type { Project } from '../data/projects';
 import Cover from './Cover.astro';
 interface Props { project: Project; index?: number; }
 const { project: p, index = 0 } = Astro.props;
 const small = p.tier === 'file';
 ---
-<a class={`pcard glass ${small ? 'small' : ''}`} href={`/projects/${p.slug}/`} data-reveal style={`--i:${index}`}>
+<a class={`pcard glass ${small ? 'small' : ''}`} href={url(`/projects/${p.slug}/`)} data-reveal style={`--i:${index}`}>
   <div class={`pcard-media ${p.shotsKind === 'phone' && !p.art ? 'phone' : ''}`}>
     <Cover project={p} widths={small ? [400, 640, 900] : [480, 720, 1000]} sizes={small ? '(max-width: 768px) 92vw, 500px' : '(max-width: 768px) 92vw, 500px'} />
   </div>

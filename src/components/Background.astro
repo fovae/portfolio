@@ -1,8 +1,9 @@
 ---
+import { url } from '../lib/url';
 import { getImage } from 'astro:assets';
 import poster from '../assets/bg-poster.png';
 const p = await getImage({ src: poster, format: 'webp', width: 1280, quality: 60 });
 ---
 <!-- The poster paints instantly as a CSS background. The videos are only an enhancement:
      nothing on the page waits for them. Two layers cross-fade at the loop point (background.ts). -->
-<div class="mv-back-wrap" style={`--poster:url(${p.src})`} aria-hidden="true" data-sources="/video/symbols-bg.webm|video/webm,/video/symbols-bg.mp4|video/mp4"></div>
+<div class="mv-back-wrap" style={`--poster:url(${p.src})`} aria-hidden="true" data-sources={`${url('/video/symbols-bg.webm')}|video/webm,${url('/video/symbols-bg.mp4')}|video/mp4`}></div>

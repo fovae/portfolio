@@ -3,6 +3,13 @@
 Static site on Astro. No framework JS is shipped: the only scripts are small vanilla TypeScript modules
 (`src/scripts`). Neon HUD look inspired by Steam profiles.
 
+## Deploy
+
+Every push to `main` runs `.github/workflows/deploy.yml`: `npm ci`, build with `BASE_PATH=/portfolio`, publish to
+GitHub Pages at https://fovae.github.io/portfolio/. Repo Settings → Pages → Source must be **GitHub Actions**.
+For a custom domain, set `SITE_URL` to it and `BASE_PATH` to `/` in the workflow. All internal links go through
+`url()` in `src/lib/url.ts`, so they follow the base.
+
 ## Run
 
 Needs Node.js 20+.

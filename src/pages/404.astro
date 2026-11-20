@@ -1,4 +1,5 @@
 ---
+import { url } from '../lib/url';
 import Base from '../layouts/Base.astro';
 ---
 <Base title="Not found | Fovae">
@@ -7,7 +8,7 @@ import Base from '../layouts/Base.astro';
       <span class="kicker">ERROR 404</span>
       <h1 class="case-title">Signal lost</h1>
       <p class="case-sum">This page does not exist.</p>
-      <div class="cta-row" style="margin-top:20px"><a class="btn primary" href="/">Back home</a></div>
+      <div class="cta-row" style="margin-top:20px"><a class="btn primary" href={url('/')}>Back home</a></div>
     </div>
   </section>
 </Base>
