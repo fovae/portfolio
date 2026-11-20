@@ -1,0 +1,152 @@
+---
+import { Image } from 'astro:assets';
+import Base from '../layouts/Base.astro';
+import Icon from '../components/Icon.astro';
+import ProjectCard from '../components/ProjectCard.astro';
+import SealedCard from '../components/SealedCard.astro';
+import avatar from '../assets/avatar.png';
+import { site, nav, socials, stack } from '../data/site';
+import { projects, sealed } from '../data/projects';
+
+const featured = projects[0];
+---
+<Base>
+  <section class="hero" id="top">
+    <div class="wrap hero-grid">
+      <div class="hero-main">
+        <div class="prof glass" data-reveal="left" style="--i:1">
+          <div class="mc-avatar-w">
+            <Image src={avatar} alt="Fovae avatar" width={92} height={92} format="webp" loading="eager" />
+          </div>
+          <div class="prof-info">
+            <div class="prof-name-row">
+              <h1 class="prof-name">{site.name}</h1>
+              <span class="chip">{site.location}</span>
+            </div>
+            <p class="prof-role">{site.headline}</p>
+            <p class="prof-tag">{site.tagline}</p>
+            <p class="prof-quote" lang="ja">宿命を越えて... それ、完成に惚れた .</p>
+            <div class="cta-row">
+              <a class="btn primary" href="#projects">View projects</a>
+              <a class="btn" href="#contact">Contact</a>
+            </div>
+          </div>
+        </div>
+
+        <a class="featured glass" href={`/projects/${featured.slug}/`} data-reveal="left" style="--i:2">
+          <div class="featured-media">
+            <Image src={featured.cover} alt={featured.coverAlt} widths={[640, 960, 1280]} sizes="(max-width: 968px) 92vw, 640px" format="webp" quality={72} loading="eager" fetchpriority="high" />
+          </div>
+          <div class="featured-cap">
+            <div>
+              <div class="featured-label">FEATURED</div>
+              <div class="featured-title">{featured.title}</div>
+            </div>
+            <span class="badge">{featured.status}</span>
+          </div>
+        </a>
+      </div>
+
+      <aside class="hero-side" aria-label="Profile details">
+        <div class="rank glass" data-reveal="right" style="--i:1">
+          <div class="rank-h">
+            <span class="rank-lbl">ACTIVE PROJECTS</span>
+            <span class="mc-rank-circle">{String(projects.length).padStart(2, '0')}</span>
+          </div>
+          <ul class="rank-lines">
+            <li>FRONTEND.DEV</li>
+            <li>UX/UI DESIGN</li>
+            <li>ROBLOX / LUAU</li>
+          </ul>
+          <div class="load-bar" aria-hidden="true"><i style="width:78%"></i></div>
+        </div>
+
+        <div class="status glass" data-reveal="right" style="--i:2">
+          <span class="status-dot" aria-hidden="true"></span>
+          <div class="status-txt">
+            <span>STATUS: <span class="status-msg">{site.status}</span></span>
+            <span class="status-clk" id="local-clock" data-tz={site.timeZone} data-label="DUB">DUB --:--:--</span>
+          </div>
+        </div>
+
+        <div class="soc glass" data-reveal="right" style="--i:3">
+          <span class="soc-ttl">Social links</span>
+          <div class="soc-list">
+            {socials.map((s) => (
+              <a class="mc-soc-item" href={s.href} target="_blank" rel="noopener noreferrer" aria-label={s.name}>
+                <Icon name={s.icon} />
+              </a>
+            ))}
+          </div>
+        </div>
+
+        <nav class="quicknav glass" data-reveal="right" style="--i:4" aria-label="Sections">
+          {nav.map((n) => <a href={n.href}>{n.label}</a>)}
+        </nav>
+
+        <div class="term glass" data-reveal="right" style="--i:5">
+          <div class="term-head"><span>CORE_TELEMETRY</span><span class="term-on">ONLINE</span></div>
+          <div class="term-body">
+            <div class="term-row"><span>LOCATION:</span><span class="term-val">DUBLIN, IE</span></div>
+            <div class="term-row"><span>LANGUAGE:</span><span class="term-val">EN</span></div>
+            <div class="term-row"><span>PROJECTS:</span><span class="term-val">{projects.length} LIVE · {sealed.length} SEALED</span></div>
+            <div class="term-row"><span>BUILD:</span><span class="term-val">STATIC</span></div>
+          </div>
+          <div class="term-foot">v1.0.0<span class="blink">_</span></div>
+        </div>
+      </aside>
+    </div>
+  </section>
+
+  <section class="section" id="projects">
+    <div class="wrap">
+      <div class="section-head">
+        <h2 class="section-title">Projects</h2>
+        <span class="section-note">02 open · 03 sealed</span>
+      </div>
+      <div class="proj-grid">
+        {projects.map((p, i) => <ProjectCard project={p} index={i} />)}
+      </div>
+      <div class="sealed-grid">
+        {sealed.map((s, i) => <SealedCard {...s} index={i} />)}
+      </div>
+    </div>
+  </section>
+
+  <section class="section" id="stack">
+    <div class="wrap">
+      <div class="section-head">
+        <h2 class="section-title">Stack</h2>
+        <span class="section-note">what I actually ship with</span>
+      </div>
+      <div class="stack-grid">
+        {stack.map((g, i) => (
+          <div class="stack-card glass" data-reveal style={`--i:${i}`}>
+            <h3>{g.group}</h3>
+            <ul>{g.items.map((t) => <li class="tag">{t}</li>)}</ul>
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <section class="section" id="contact">
+    <div class="wrap">
+      <div class="section-head">
+        <h2 class="section-title">Contact</h2>
+        <span class="section-note">Telegram is the fastest</span>
+      </div>
+      <div class="contact glass" data-reveal>
+        <h3>Let's build something fast and good-looking.</h3>
+        <p>Open to frontend and UX/UI work, and to collaborations on games and PWAs. The quickest way to reach me is Telegram.</p>
+        <div class="soc-list">
+          {socials.map((s) => (
+            <a class="mc-soc-item" href={s.href} target="_blank" rel="noopener noreferrer" aria-label={s.name}>
+              <Icon name={s.icon} />
+            </a>
+          ))}
+        </div>
+      </div>
+    </div>
+  </section>
+</Base>

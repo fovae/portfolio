@@ -1,0 +1,10 @@
+---
+interface Props { class?: string; }
+const { class: cls = '' } = Astro.props;
+---
+<svg class={`core ${cls}`} viewBox="0 0 44 44" aria-hidden="true" focusable="false">
+  <circle class="core-glow" cx="22" cy="22" r="14" />
+  <path class="core-half left-side" d="M22,8 A14,14 0 0,0 22,36 Z" />
+  <path class="core-half right-side" d="M22,8 A14,14 0 0,1 22,36" fill="none" stroke-width="2" />
+  <slot />
+</svg>

@@ -1,0 +1,10 @@
+---
+import { getImage } from 'astro:assets';
+import poster from '../assets/bg-poster.png';
+const p = await getImage({ src: poster, format: 'webp', width: 1280, quality: 60 });
+---
+<!-- The poster paints instantly as a CSS background. The video is only an enhancement:
+     nothing on the page waits for it. -->
+<div class="mv-back-wrap" style={`--poster:url(${p.src})`} aria-hidden="true">
+  <video id="bgVideo" muted loop playsinline preload="none" poster={p.src} data-sources="/video/symbols-bg.webm|video/webm,/video/symbols-bg.mp4|video/mp4"></video>
+</div>

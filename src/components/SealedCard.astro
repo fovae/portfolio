@@ -1,0 +1,9 @@
+---
+interface Props { code: string; clearance: string; state: string; index?: number; }
+const { code, clearance, state, index = 0 } = Astro.props;
+---
+<article class="sealed glass" data-reveal style={`--i:${index}`} aria-label={`${code}: ${state.toLowerCase()}, details not public`}>
+  <div class="sealed-top"><span>{code}</span><span>{clearance}</span></div>
+  <div class="redact" aria-hidden="true"><i></i><i></i><i></i></div>
+  <div class="sealed-state">{state}</div>
+</article>

@@ -1,0 +1,116 @@
+/* ---------- tokens ---------- */
+:root {
+  --pink-neon: #ffadfe;
+  --pink-soft: rgba(255, 173, 254, 0.45);
+  --pink-accent: #d482d3;
+
+  --bg: #000;
+  --text: #fff3ff;
+  --subtext: #b4b0b4; /* >= 7:1 on the glass background */
+
+  --font-head: 'Space Grotesk Variable', system-ui, sans-serif;
+  --font-mono: 'JetBrains Mono Variable', ui-monospace, monospace;
+
+  --glass: rgba(10, 10, 14, 0.62);
+  --border: rgba(255, 255, 255, 0.08);
+  --border-top: rgba(255, 255, 255, 0.18);
+  --shadow: 0 10px 30px rgba(0, 0, 0, 0.5), 0 0 20px rgba(255, 173, 254, 0.02);
+
+  --ease: cubic-bezier(0.23, 1, 0.32, 1);
+  --nav-h: 74px;
+  --maxw: 1040px;
+}
+
+/* ---------- reset ---------- */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { background: var(--bg); scroll-behavior: smooth; scroll-padding-top: 96px; -webkit-text-size-adjust: 100%; }
+body {
+  min-height: 100vh;
+  color: var(--text);
+  font-family: var(--font-head);
+  overflow-x: hidden;
+  -webkit-font-smoothing: antialiased;
+}
+img, svg, video { display: block; max-width: 100%; }
+a { color: inherit; }
+ul { list-style: none; }
+::selection { background: var(--pink-soft); color: #000; }
+
+:focus-visible { outline: 2px solid var(--pink-neon); outline-offset: 4px; }
+
+.sr-only {
+  position: absolute; width: 1px; height: 1px; overflow: hidden;
+  clip: rect(0 0 0 0); white-space: nowrap;
+}
+.skip-link { position: fixed; left: 12px; top: 12px; z-index: 300; padding: 10px 16px; background: #000; border: 1px solid var(--pink-neon); border-radius: 8px; clip-path: inset(50%); }
+.skip-link:focus { clip-path: none; }
+
+/* scrollbar */
+::-webkit-scrollbar { width: 6px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { background: var(--pink-soft); border-radius: 10px; }
+::-webkit-scrollbar-thumb:hover { background: var(--pink-neon); }
+
+/* ---------- background ---------- */
+.mv-back-wrap {
+  position: fixed; inset: 0; z-index: 0; overflow: hidden;
+  background: #050505 var(--poster) center / cover no-repeat;
+  contain: strict;
+}
+.mv-back-wrap::after {
+  content: ''; position: absolute; inset: 0; pointer-events: none;
+  background: radial-gradient(circle at center, rgba(255, 255, 255, 0.03), rgba(0, 0, 0, 0.35));
+}
+#bgVideo {
+  width: 100%; height: 100%; object-fit: cover; opacity: 0;
+  transition: opacity 2s var(--ease);
+}
+#bgVideo.is-playing { opacity: 1; }
+
+/* ---------- reveal (only when JS is running; see Base.astro and reveal.ts) ---------- */
+.js [data-reveal] {
+  opacity: 0;
+  transform: translate3d(var(--rx, 0), 28px, 0);
+  transition: opacity 0.9s var(--ease), transform 0.9s var(--ease);
+  transition-delay: calc(var(--i, 0) * 90ms);
+}
+.js [data-reveal='left'] { --rx: -48px; }
+.js [data-reveal='right'] { --rx: 48px; }
+.js [data-reveal].is-in { opacity: 1; transform: none; }
+
+/* ---------- custom cursor (only with a real mouse; class added by cursor.ts) ---------- */
+.mc-cursor { display: none; }
+@media (hover: hover) and (pointer: fine) {
+  .has-cursor, .has-cursor * { cursor: none !important; }
+  .has-cursor .mc-cursor {
+    display: block; position: fixed; top: 0; left: 0; width: 0; height: 0;
+    z-index: 99999; pointer-events: none;
+  }
+  .mc-cur-core {
+    position: absolute; width: 4px; height: 4px; background: var(--pink-neon);
+    box-shadow: 0 0 8px var(--pink-neon); will-change: transform;
+    transition: background-color 0.3s var(--ease);
+  }
+  .mc-cur-sight {
+    position: absolute; width: 16px; height: 16px; will-change: transform;
+    transition: width 0.4s var(--ease), height 0.4s var(--ease);
+  }
+  .mc-cur-sight::before, .mc-cur-sight::after {
+    content: ''; position: absolute; top: 50%; left: 50%; background: var(--pink-neon);
+    transform: translate(-50%, -50%); box-shadow: 0 0 6px var(--pink-neon);
+  }
+  .mc-cur-sight::before { width: 2px; height: 100%; }
+  .mc-cur-sight::after { width: 100%; height: 2px; }
+  .mc-cursor.is-hover .mc-cur-sight { width: 22px; height: 22px; }
+  .mc-cursor.is-hover .mc-cur-sight::before, .mc-cursor.is-hover .mc-cur-sight::after {
+    background: #fff; box-shadow: 0 0 6px #fff, 0 0 16px var(--pink-neon);
+  }
+  .mc-cursor.is-hover .mc-cur-core { background: #fff; box-shadow: 0 0 10px #fff; }
+  .mc-cursor.is-magnetic .mc-cur-sight { width: 26px; height: 26px; }
+}
+
+/* ---------- reduced motion ---------- */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { animation: none !important; transition: none !important; scroll-behavior: auto !important; }
+  .js [data-reveal] { opacity: 1; transform: none; }
+}

@@ -1,0 +1,20 @@
+---
+import { Image } from 'astro:assets';
+import type { Project } from '../data/projects';
+interface Props { project: Project; index?: number; }
+const { project: p, index = 0 } = Astro.props;
+---
+<a class="pcard glass" href={`/projects/${p.slug}/`} data-reveal style={`--i:${index}`}>
+  <div class={`pcard-media ${p.shotsKind === 'phone' ? 'phone' : ''}`}>
+    <Image src={p.cover} alt={p.coverAlt} widths={[480, 720, 1000]} sizes="(max-width: 768px) 92vw, 500px" format="webp" quality={72} loading="lazy" />
+  </div>
+  <div class="pcard-body">
+    <div class="pcard-top">
+      <span class="kicker">{p.kicker}</span>
+      <span class={`badge ${p.status === 'LIVE' ? 'live' : ''}`}>{p.status}</span>
+    </div>
+    <h3>{p.title}</h3>
+    <p>{p.summary}</p>
+    <ul class="tags">{p.tags.map((t) => <li class="tag">{t}</li>)}</ul>
+  </div>
+</a>

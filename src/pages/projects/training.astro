@@ -1,0 +1,5 @@
+---
+import CaseStudy from '../../components/CaseStudy.astro';
+import { projects } from '../../data/projects';
+---
+<CaseStudy project={projects.find((p) => p.slug === 'training')!} />

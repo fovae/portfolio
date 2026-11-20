@@ -1,0 +1,30 @@
+---
+import Logo from './Logo.astro';
+import { nav } from '../data/site';
+---
+<header class="main-nav" id="top-nav">
+  <div class="container">
+    <a class="logo" href="/" aria-label="Fovae, home">
+      <Logo class="desktop-core" />
+      <span class="logo-text">FOVAE</span>
+    </a>
+    <nav aria-label="Primary">
+      {nav.map((n) => <a href={n.href}>{n.label}</a>)}
+    </nav>
+    <button class="burger-btn" type="button" aria-label="Menu" aria-expanded="false" aria-controls="hud-menu">
+      <Logo class="burger-core-svg">
+        <path class="core-cross line-1" d="M15,15 L29,29" />
+        <path class="core-cross line-2" d="M29,15 L15,29" />
+      </Logo>
+    </button>
+  </div>
+</header>
+
+<div class="cyber-hud-menu" id="hud-menu" inert aria-hidden="true">
+  <div class="hud-scanline"></div>
+  <div class="hud-frame-line top-left"></div>
+  <div class="hud-frame-line bottom-right"></div>
+  <nav class="hud-nav" aria-label="Menu">
+    {nav.map((n, i) => <a href={n.href} class="hud-link" data-num={`0${i + 1}`}>{n.label}</a>)}
+  </nav>
+</div>

@@ -1,119 +1,44 @@
-# FOVAE — Neon Portfolio Experience
+# FOVAE: portfolio
 
-A cinematic cyberpunk-inspired portfolio interface focused on atmosphere, motion, and minimal interaction.
+Static site on Astro. No framework JS is shipped: the only scripts are small vanilla TypeScript modules
+(`src/scripts`). Neon HUD look inspired by Steam profiles.
 
-Built with pure HTML, CSS, and Vanilla JavaScript.
+## Run
 
----
-
-## Overview
-
-FOVAE is a fullscreen immersive portfolio concept combining:
-
-- neon-futuristic visuals
-- HUD-inspired navigation
-- animated SVG microinteractions
-- glassmorphism UI
-- cinematic background video
-- responsive mobile experience
-
-Designed with inspiration from:
-- Steam UI aesthetics
-- sci-fi interfaces
-- neon future art direction
-
----
-
-## Tech Stack
-
-- HTML5
-- CSS3
-- Vanilla JavaScript
-
-No frameworks. No libraries.
-
----
-
-## Features
-
-### Cinematic Background System
-- fullscreen looping video background
-- overlay texture layers
-- optimized rendering & smooth transitions
-
-### Cyber HUD Navigation
-- animated fullscreen HUD menu
-- SVG morphing burger button
-- scanline effects
-- reactive neon transitions
-
-### Motion & Interaction
-- smooth page reveal animations
-- scroll-based UI behavior
-- parallax movement
-- responsive interaction states
-
-### Responsive Design
-- adaptive mobile navigation
-- optimized touch interaction
-- reduced-motion accessibility support
-
----
-
-## Project Structure
+Needs Node.js 20+.
 
 ```bash
-.
-├── index.html
-├── decor.css
-├── prog.js
-├── mv-back/
-│   ├── symbols-bg.webm
-│   ├── symbols-bg.mp4
-│   └── mv-back-over.jpg
-└── fm-i/
+npm install
+npm run dev       # http://localhost:4321
+npm run build     # static site in dist/
+npm run preview
 ```
 
----
+## Structure
 
-## Run Locally
-
-```bash
-git clone <repo>
-cd fovae-portfolio
+```
+src/data/        site.ts (nav, socials, stack), projects.ts (case studies), icons.ts
+src/components/  Header, Background, ProjectCard, SealedCard, CaseStudy, ...
+src/pages/       index, projects/somn, projects/training, 404
+src/scripts/     reveal, background (video), menu, cursor, clock
+src/styles/      base (tokens, cursor, reveal), hud (header, menu), sections
+src/assets/      images optimized by Astro at build (webp + srcset)
+public/          video, icons, og-image, robots.txt
 ```
 
-Open:
+Add a project: append an entry to `src/data/projects.ts` and add a page in `src/pages/projects/`.
 
-```bash
-index.html
-```
+## Performance notes
 
----
+- The page never waits for the video. The poster is a CSS background; the video loads on idle and is skipped for
+  reduced motion and data saver, and paused when the tab is hidden.
+- `backdrop-filter` is used only on the header. Cards use a more opaque glass instead (blur over a video is the
+  most expensive thing on the old version).
+- The custom cursor runs only with a real mouse, and its animation loop sleeps when the cursor is still.
+- Fonts are self-hosted (`@fontsource-variable`), no requests to Google.
 
-## Performance Notes
+## TODO before release
 
-- hardware-accelerated transforms
-- optimized blur usage
-- passive scroll listeners
-- reduced repaint-heavy effects
-- mobile-friendly rendering
-
----
-
-## Visual Direction
-
-Minimal.
-Atmospheric.
-Synthetic.
-
-Built around contrast between:
-- darkness & neon glow
-- softness & sharp geometry
-- cinematic motion & clean structure
-
----
-
-## Author
-
-FOVAE
+- Real domain in `astro.config.mjs` (`site`) and a `og-image.jpg` at exactly 1200×630 (now 1200×620).
+- Convert `public/video` to a shorter, lower-bitrate loop if needed.
+- Contact e-mail (currently only social links).

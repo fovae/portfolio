@@ -1,0 +1,71 @@
+---
+import { Image } from 'astro:assets';
+import Base from '../layouts/Base.astro';
+import type { Project } from '../data/projects';
+import { projects } from '../data/projects';
+
+interface Props { project: Project; }
+const { project: p } = Astro.props;
+const next = projects[(projects.findIndex((x) => x.slug === p.slug) + 1) % projects.length];
+const phone = p.shotsKind === 'phone';
+---
+<Base title={`${p.title} | Fovae`} description={p.summary}>
+  <section class="case-hero">
+    <div class="wrap">
+      <a class="back" href="/#projects">&lt; All projects</a>
+      <div class="pcard-top" style="margin-top:8px">
+        <span class="kicker">{p.kicker}</span>
+        <span class={`badge ${p.status === 'LIVE' ? 'live' : ''}`}>{p.status}</span>
+      </div>
+      <h1 class="case-title">{p.title}</h1>
+      <p class="case-sum">{p.summary}</p>
+      {p.links.length > 0 && (
+        <div class="cta-row" style="margin-top:20px">
+          {p.links.map((l) => <a class="btn primary" href={l.href} target="_blank" rel="noopener noreferrer">{l.label}</a>)}
+        </div>
+      )}
+      <div class={`case-cover glass ${phone ? 'phone' : ''}`} data-reveal>
+        <Image src={p.cover} alt={p.coverAlt} widths={phone ? [320, 640] : [720, 1100, 1600]} sizes={phone ? '300px' : '(max-width: 1040px) 92vw, 1000px'} format="webp" quality={75} loading="eager" fetchpriority="high" />
+      </div>
+      <dl class="meta-grid">
+        {p.meta.map((m, i) => (
+          <div class="meta glass" data-reveal style={`--i:${i}`}><dt>{m.label}</dt><dd>{m.value}</dd></div>
+        ))}
+      </dl>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="wrap">
+      <div class="section-head"><h2 class="section-title">Overview</h2></div>
+      <div class="prose" data-reveal>{p.intro.map((t) => <p>{t}</p>)}</div>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="wrap">
+      <div class="section-head"><h2 class="section-title">Highlights</h2></div>
+      <div class="hl-grid">
+        {p.highlights.map((h, i) => (
+          <article class="hl glass" data-reveal style={`--i:${i}`}><h3>{h.title}</h3><p>{h.text}</p></article>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="wrap">
+      <div class="section-head"><h2 class="section-title">Gallery</h2></div>
+      <div class={`shots ${phone ? 'phone' : 'wide'}`}>
+        {p.shots.map((s, i) => (
+          <figure class="shot glass" data-reveal style={`--i:${i}`}>
+            <Image src={s.src} alt={s.alt} widths={phone ? [320, 640] : [480, 800, 1200]} sizes={phone ? '(max-width: 768px) 45vw, 240px' : '(max-width: 768px) 92vw, 500px'} format="webp" quality={72} loading="lazy" />
+          </figure>
+        ))}
+      </div>
+      <div class="next">
+        <a class="btn" href={`/projects/${next.slug}/`}>Next: {next.title} &gt;</a>
+      </div>
+    </div>
+  </section>
+</Base>
