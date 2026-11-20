@@ -1,5 +1,5 @@
 ---
-import { Image } from 'astro:assets';
+import { Image, Picture } from 'astro:assets';
 import type { Project } from '../data/projects';
 import Phantom from './art/Phantom.astro';
 import Transit from './art/Transit.astro';
@@ -18,5 +18,5 @@ const loading = eager ? 'eager' : 'lazy';
   </div>
 )}
 {!p.art && p.shotsKind !== 'phone' && p.cover && (
-  <Image src={p.cover} alt={p.coverAlt} widths={widths} sizes={sizes} format="webp" quality={72} loading={loading} fetchpriority={eager ? 'high' : undefined} />
+  <Picture src={p.cover} alt={p.coverAlt} widths={widths} sizes={sizes} formats={['avif', 'webp']} quality={72} loading={loading} fetchpriority={eager ? 'high' : undefined} />
 )}

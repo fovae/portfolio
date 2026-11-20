@@ -5,4 +5,6 @@ export default defineConfig({
   site: 'https://fovae.dev', // TODO: replace with the real domain at release
   output: 'static',
   build: { inlineStylesheets: 'auto' },
+  // case pages are fetched on hover, so they open instantly
+  prefetch: { prefetchAll: true, defaultStrategy: 'hover' },
 });

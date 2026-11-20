@@ -1,0 +1,24 @@
+---
+/* Brand avatar: the FOVAE core glyph (half-filled circle from the logo) in a HUD frame.
+   To use a photo instead, replace this component in index.astro with an <Image>. */
+---
+<svg class="avatar-art" viewBox="0 0 100 100" role="img" aria-label="Fovae">
+  <defs>
+    <radialGradient id="av-glow" cx="50%" cy="50%" r="50%">
+      <stop offset="0" stop-color="#ffadfe" stop-opacity=".45" />
+      <stop offset=".6" stop-color="#ffadfe" stop-opacity=".08" />
+      <stop offset="1" stop-color="#ffadfe" stop-opacity="0" />
+    </radialGradient>
+    <pattern id="av-grid" width="10" height="10" patternUnits="userSpaceOnUse"><path d="M10 0H0V10" fill="none" stroke="#ffadfe" stroke-opacity=".07" stroke-width=".5" /></pattern>
+  </defs>
+  <rect width="100" height="100" fill="#0b070e" />
+  <rect width="100" height="100" fill="url(#av-grid)" />
+  <circle class="av-pulse" cx="50" cy="50" r="40" fill="url(#av-glow)" />
+  <g stroke="#ffadfe" stroke-width="1.6" stroke-linecap="round" opacity=".75">
+    <path d="M50 14v7M50 79v7M14 50h7M79 50h7" />
+  </g>
+  <circle cx="50" cy="50" r="26" fill="none" stroke="#ffadfe" stroke-opacity=".18" stroke-dasharray="3 5" />
+  <path d="M50,32 A18,18 0 0,0 50,68 Z" fill="#ffadfe" />
+  <path d="M50,32 A18,18 0 0,1 50,68" fill="none" stroke="#ffadfe" stroke-width="2.6" />
+  <path d="M6 16V6h10M84 6h10v10M94 84v10H84M16 94H6V84" fill="none" stroke="#fff3ff" stroke-opacity=".5" stroke-width="1.2" />
+</svg>

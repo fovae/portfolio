@@ -1,29 +1,30 @@
 ---
-import { Image } from 'astro:assets';
+import { Picture } from 'astro:assets';
 import Base from '../layouts/Base.astro';
 import Icon from '../components/Icon.astro';
 import ProjectCard from '../components/ProjectCard.astro';
-import avatar from '../assets/avatar.png';
-import { site, nav, socials, stack, process as steps } from '../data/site';
+import Avatar from '../components/art/Avatar.astro';
+import { site, nav, socials, contacts, stack, process as steps } from '../data/site';
 import { projects, flagships, caseFiles } from '../data/projects';
 
 const featured = projects[0];
 ---
 <Base>
-  <section class="hero" id="top">
+  <section class="hero">
     <div class="wrap hero-grid">
       <div class="hero-main">
         <div class="prof glass" data-reveal="left" style="--i:1">
           <div class="mc-avatar-w">
-            <Image src={avatar} alt="Fovae avatar" width={92} height={92} format="webp" loading="eager" />
+            <Avatar />
           </div>
           <div class="prof-info">
             <div class="prof-name-row">
-              <h1 class="prof-name">{site.name}</h1>
+              <h1 class="prof-name glitch" data-text={site.name}>{site.name}</h1>
               <span class="chip">{site.location}</span>
             </div>
             <p class="prof-role">{site.headline}</p>
             <p class="prof-tag">{site.tagline}</p>
+            <p class="prof-motto">&gt; {site.motto}<span class="blink" aria-hidden="true">_</span></p>
             <p class="prof-quote" lang="ja">宿命を越えて... それ、完成に惚れた .</p>
             <div class="cta-row">
               <a class="btn primary" href="#projects">View projects</a>
@@ -32,9 +33,9 @@ const featured = projects[0];
           </div>
         </div>
 
-        <a class="featured glass" href={`/projects/${featured.slug}/`} data-reveal="left" style="--i:2">
+        <a class="featured glass" href={`/projects/${featured.slug}/`}>
           <div class="featured-media">
-            <Image src={featured.cover} alt={featured.coverAlt} widths={[640, 960, 1280]} sizes="(max-width: 968px) 92vw, 640px" format="webp" quality={72} loading="eager" fetchpriority="high" />
+            <Picture src={featured.cover} alt={featured.coverAlt} widths={[640, 960, 1280]} sizes="(max-width: 968px) 92vw, 640px" formats={['avif', 'webp']} quality={72} loading="eager" fetchpriority="high" />
           </div>
           <div class="featured-cap">
             <div>
@@ -116,6 +117,14 @@ const featured = projects[0];
     </div>
   </section>
 
+  <div class="ticker" aria-hidden="true">
+    <div class="ticker-track">
+      {[0, 1].map(() => (
+        <span class="ticker-row">{stack.flatMap((g) => g.items).map((t) => <span class="ticker-item">{t}</span>)}</span>
+      ))}
+    </div>
+  </div>
+
   <section class="section" id="process">
     <div class="wrap">
       <div class="section-head">
@@ -155,11 +164,25 @@ const featured = projects[0];
     <div class="wrap">
       <div class="section-head">
         <h2 class="section-title">04 / Contact</h2>
-        <span class="section-note">Telegram is the fastest</span>
+        <span class="section-note">Dublin · GMT/IST</span>
       </div>
       <div class="contact glass" data-reveal>
-        <h3>Let's build something fast and good-looking.</h3>
-        <p>Open to frontend and UX/UI work, and to collaborations on games and PWAs. The quickest way to reach me is Telegram.</p>
+        <div class="contact-intro">
+          <h3>Let's build something fast and good-looking.</h3>
+          <p>Open to frontend and UX/UI work, and to collaborations on games and PWAs. Write in English or Russian.</p>
+        </div>
+        <ul class="lines">
+          {contacts.map((c) => (
+            <li class="line">
+              <a class="line-main" href={c.href} target={c.href.startsWith('http') ? '_blank' : undefined} rel={c.href.startsWith('http') ? 'noopener noreferrer' : undefined}>
+                <span class="line-icon"><Icon name={c.icon} /></span>
+                <span class="line-label">{c.label}</span>
+                <span class="line-value">{c.value}</span>
+              </a>
+              {c.copy && <button class="line-copy" type="button" data-copy={c.copy} aria-label={`Copy ${c.label.toLowerCase()}`}>COPY</button>}
+            </li>
+          ))}
+        </ul>
         <div class="soc-list">
           {socials.map((s) => (
             <a class="mc-soc-item" href={s.href} target="_blank" rel="noopener noreferrer" aria-label={s.name}>

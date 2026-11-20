@@ -1,4 +1,5 @@
-// Builds public/og-image.jpg (1200x630) from the SOMN key art. Run: npm run og
+// Builds public/og-image.jpg (1200x630) from the SOMN key art and the PNG favicons
+// from public/icons/favicon.svg. Run: npm run assets
 import sharp from 'sharp';
 
 const W = 1200, H = 630;
@@ -18,4 +19,8 @@ await sharp('src/assets/somn/keyart.jpg')
   .composite([{ input: Buffer.from(overlay) }])
   .jpeg({ quality: 82, mozjpeg: true })
   .toFile('public/og-image.jpg');
-console.log('public/og-image.jpg written');
+const icon = await (await import('node:fs/promises')).readFile('public/icons/favicon.svg');
+for (const [name, size] of [['favicon-16.png', 16], ['favicon-32.png', 32], ['apple-touch-icon.png', 180]]) {
+  await sharp(icon, { density: 72 * (size / 32) * 2 }).resize(size, size).png().toFile(`public/icons/${name}`);
+}
+console.log('og-image and favicons written');

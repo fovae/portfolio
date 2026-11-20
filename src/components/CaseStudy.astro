@@ -1,5 +1,5 @@
 ---
-import { Image, getImage } from 'astro:assets';
+import { Picture, getImage } from 'astro:assets';
 import Base from '../layouts/Base.astro';
 import Cover from './Cover.astro';
 import type { Project } from '../data/projects';
@@ -31,7 +31,7 @@ const sec = () => String(++n).padStart(2, '0');
           {p.links.map((l) => <a class="btn primary" href={l.href} target="_blank" rel="noopener noreferrer">{l.label} ↗</a>)}
         </div>
       )}
-      <div class={`case-cover glass ${phone ? 'phone' : ''} ${p.art ? 'art-cover' : ''}`} data-reveal>
+      <div class={`case-cover glass ${phone ? "phone" : ""} ${p.art ? "art-cover" : ""}`}>
         <Cover project={p} widths={[720, 1100, 1600]} sizes="(max-width: 1040px) 92vw, 1000px" eager detail />
       </div>
 
@@ -88,7 +88,7 @@ const sec = () => String(++n).padStart(2, '0');
         <div class={`shots ${phone ? 'phone' : 'wide'}`}>
           {p.shots.map((s, k) => (
             <figure class={`shot glass ${s.wide ? 'span' : ''}`} data-reveal style={`--i:${k % 3}`}>
-              <a class="shot-link" href={full[k].src} target="_blank" rel="noopener" aria-label={`Open full size: ${s.alt}`}><Image src={s.src} alt={s.alt} widths={phone ? [320, 640] : s.wide ? [720, 1100, 1600] : [480, 800, 1200]} sizes={phone ? '(max-width: 768px) 45vw, 240px' : s.wide ? '(max-width: 1040px) 92vw, 1000px' : '(max-width: 768px) 92vw, 500px'} format="webp" quality={74} loading="lazy" /></a>
+              <a class="shot-link" href={full[k].src} target="_blank" rel="noopener" aria-label={`Open full size: ${s.alt}`}><Picture src={s.src} alt={s.alt} widths={phone ? [320, 640] : s.wide ? [720, 1100, 1600] : [480, 800, 1200]} sizes={phone ? '(max-width: 768px) 45vw, 240px' : s.wide ? '(max-width: 1040px) 92vw, 1000px' : '(max-width: 768px) 92vw, 500px'} formats={['avif', 'webp']} quality={74} loading="lazy" /></a>
               {s.caption && <figcaption>{s.caption}</figcaption>}
             </figure>
           ))}

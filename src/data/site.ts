@@ -2,12 +2,14 @@ import type { IconName } from './icons';
 
 export const site = {
   name: 'fovae',
-  title: 'Fovae | Frontend Developer & UX/UI',
+  title: 'Fovae | Frontend Developer & UX/UI Designer, Dublin',
   description:
-    'Frontend developer and UX/UI designer from Dublin. Offline-first PWAs, fast interfaces and neon worlds in Roblox.',
+    'Fovae is a frontend developer and UX/UI designer in Dublin. Offline-first PWAs, design systems and neon worlds in Roblox. Case studies: Project: SOMN and Simple Training.',
   headline: 'Frontend developer & UX/UI designer',
-  tagline: 'I build fast interfaces, offline-first PWAs and neon worlds in Roblox.',
-  location: 'Ireland',
+  tagline:
+    'I design and build interfaces that feel fast and look deliberate: offline-first web apps, design systems, and neon worlds in Roblox.',
+  motto: 'Spec first, system second, real devices before anything ships.',
+  location: 'Dublin, IE',
   timeZone: 'Europe/Dublin',
   status: 'AVAILABLE',
 } as const;
@@ -18,6 +20,13 @@ export const nav = [
   { label: 'Stack', href: '/#stack' },
   { label: 'Contact', href: '/#contact' },
 ] as const;
+
+/** Direct lines, shown as rows in the Contact section. */
+export const contacts: { label: string; value: string; href: string; icon: IconName; copy?: string }[] = [
+  { label: 'Email', value: 'fovae.work@gmail.com', href: 'mailto:fovae.work@gmail.com', icon: 'mail', copy: 'fovae.work@gmail.com' },
+  { label: 'WhatsApp', value: '+353 85 140 8639', href: 'https://wa.me/353851408639', icon: 'whatsapp', copy: '+353851408639' },
+  { label: 'Telegram', value: '@fovaedev', href: 'https://t.me/fovaedev', icon: 'telegram' },
+];
 
 export const socials: { name: string; icon: IconName; href: string }[] = [
   { name: 'GitHub', icon: 'github', href: 'https://github.com/fovae' },
@@ -32,10 +41,9 @@ export const stack = [
     group: 'Web',
     items: ['TypeScript', 'Astro', 'Vite', 'Preact + Signals', 'CSS (no framework)', 'PWA / Workbox', 'IndexedDB'],
   },
-  { group: 'Quality', items: ['Playwright', 'axe-core', 'ESLint', 'Prettier', 'GitHub Actions'] },
+  { group: 'Quality & delivery', items: ['Playwright', 'axe-core', 'ESLint', 'Prettier', 'GitHub Actions', 'Cloudflare Pages', 'Strict CSP'] },
   { group: 'Roblox', items: ['Luau', 'Roblox Studio', 'Procedural building', 'CollectionService', 'UI kits in code'] },
   { group: 'Design', items: ['UX / UI', 'Design systems', 'Style guides', 'Motion', 'Accessibility (WCAG AA)', 'Art direction'] },
-  { group: 'Hosting', items: ['Cloudflare Pages', 'Strict CSP'] },
 ];
 
 /** How I work: each step is something the projects on this site actually do. */
