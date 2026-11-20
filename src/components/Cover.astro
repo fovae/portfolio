@@ -1,0 +1,22 @@
+---
+import { Image } from 'astro:assets';
+import type { Project } from '../data/projects';
+import Phantom from './art/Phantom.astro';
+import Transit from './art/Transit.astro';
+
+interface Props { project: Project; sizes: string; widths: number[]; eager?: boolean; detail?: boolean; }
+const { project: p, sizes, widths, eager = false, detail = false } = Astro.props;
+const loading = eager ? 'eager' : 'lazy';
+---
+{p.art === 'phantom' && <Phantom detail={detail} />}
+{p.art === 'transit' && <Transit />}
+{!p.art && p.shotsKind === 'phone' && (
+  <div class="phones">
+    {[p.shots[0], { src: p.cover!, alt: p.coverAlt }, p.shots[1]].map((s, i) => (
+      <Image src={s.src} alt={i === 1 ? s.alt : ''} widths={[240, 480]} sizes="(max-width: 768px) 30vw, 170px" format="webp" quality={75} loading={loading} class={i === 1 ? 'mid' : ''} />
+    ))}
+  </div>
+)}
+{!p.art && p.shotsKind !== 'phone' && p.cover && (
+  <Image src={p.cover} alt={p.coverAlt} widths={widths} sizes={sizes} format="webp" quality={72} loading={loading} fetchpriority={eager ? 'high' : undefined} />
+)}

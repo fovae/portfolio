@@ -1,13 +1,20 @@
 ---
-import { Image } from 'astro:assets';
+import { Image, getImage } from 'astro:assets';
 import Base from '../layouts/Base.astro';
+import Cover from './Cover.astro';
 import type { Project } from '../data/projects';
 import { projects } from '../data/projects';
 
 interface Props { project: Project; }
 const { project: p } = Astro.props;
-const next = projects[(projects.findIndex((x) => x.slug === p.slug) + 1) % projects.length];
-const phone = p.shotsKind === 'phone';
+const i = projects.findIndex((x) => x.slug === p.slug);
+const prev = projects[(i - 1 + projects.length) % projects.length];
+const next = projects[(i + 1) % projects.length];
+const phone = p.shotsKind === 'phone' && !p.art;
+// full-size versions for "open image" links in the gallery
+const full = await Promise.all(p.shots.map((s) => getImage({ src: s.src, format: 'webp', width: Math.min(s.src.width, phone ? 780 : 2000), quality: 80 })));
+let n = 0;
+const sec = () => String(++n).padStart(2, '0');
 ---
 <Base title={`${p.title} | Fovae`} description={p.summary}>
   <section class="case-hero">
@@ -21,15 +28,20 @@ const phone = p.shotsKind === 'phone';
       <p class="case-sum">{p.summary}</p>
       {p.links.length > 0 && (
         <div class="cta-row" style="margin-top:20px">
-          {p.links.map((l) => <a class="btn primary" href={l.href} target="_blank" rel="noopener noreferrer">{l.label}</a>)}
+          {p.links.map((l) => <a class="btn primary" href={l.href} target="_blank" rel="noopener noreferrer">{l.label} ↗</a>)}
         </div>
       )}
-      <div class={`case-cover glass ${phone ? 'phone' : ''}`} data-reveal>
-        <Image src={p.cover} alt={p.coverAlt} widths={phone ? [320, 640] : [720, 1100, 1600]} sizes={phone ? '300px' : '(max-width: 1040px) 92vw, 1000px'} format="webp" quality={75} loading="eager" fetchpriority="high" />
+      <div class={`case-cover glass ${phone ? 'phone' : ''} ${p.art ? 'art-cover' : ''}`} data-reveal>
+        <Cover project={p} widths={[720, 1100, 1600]} sizes="(max-width: 1040px) 92vw, 1000px" eager detail />
       </div>
+
+      <dl class="stats" data-reveal>
+        {p.stats.map((s) => <div class="stat"><dt>{s.value}</dt><dd>{s.label}</dd></div>)}
+      </dl>
+
       <dl class="meta-grid">
-        {p.meta.map((m, i) => (
-          <div class="meta glass" data-reveal style={`--i:${i}`}><dt>{m.label}</dt><dd>{m.value}</dd></div>
+        {p.meta.map((m, k) => (
+          <div class="meta glass" data-reveal style={`--i:${k}`}><dt>{m.label}</dt><dd>{m.value}</dd></div>
         ))}
       </dl>
     </div>
@@ -37,35 +49,58 @@ const phone = p.shotsKind === 'phone';
 
   <section class="section">
     <div class="wrap">
-      <div class="section-head"><h2 class="section-title">Overview</h2></div>
+      <div class="section-head"><h2 class="section-title">{sec()} / Overview</h2></div>
       <div class="prose" data-reveal>{p.intro.map((t) => <p>{t}</p>)}</div>
     </div>
   </section>
 
   <section class="section">
     <div class="wrap">
-      <div class="section-head"><h2 class="section-title">Highlights</h2></div>
+      <div class="section-head"><h2 class="section-title">{sec()} / Highlights</h2></div>
       <div class="hl-grid">
-        {p.highlights.map((h, i) => (
-          <article class="hl glass" data-reveal style={`--i:${i}`}><h3>{h.title}</h3><p>{h.text}</p></article>
+        {p.highlights.map((h, k) => (
+          <article class="hl glass" data-reveal style={`--i:${k}`}><span class="hl-num">{String(k + 1).padStart(2, '0')}</span><h3>{h.title}</h3><p>{h.text}</p></article>
         ))}
       </div>
     </div>
   </section>
 
+  {p.palette && (
+    <section class="section">
+      <div class="wrap">
+        <div class="section-head"><h2 class="section-title">{sec()} / Tokens</h2><span class="section-note">Kit.Color</span></div>
+        <ul class="palette">
+          {p.palette.map((c, k) => (
+            <li class="swatch glass" data-reveal style={`--i:${k}`}>
+              <span class="chipcolor" style={`background:${c.hex}`}></span>
+              <strong>{c.name}</strong><code>{c.hex}</code><span>{c.role}</span>
+            </li>
+          ))}
+        </ul>
+      </div>
+    </section>
+  )}
+
+  {p.shots.length > 0 && (
+    <section class="section">
+      <div class="wrap">
+        <div class="section-head"><h2 class="section-title">{sec()} / Gallery</h2><span class="section-note">{p.shots.length} images</span></div>
+        <div class={`shots ${phone ? 'phone' : 'wide'}`}>
+          {p.shots.map((s, k) => (
+            <figure class={`shot glass ${s.wide ? 'span' : ''}`} data-reveal style={`--i:${k % 3}`}>
+              <a class="shot-link" href={full[k].src} target="_blank" rel="noopener" aria-label={`Open full size: ${s.alt}`}><Image src={s.src} alt={s.alt} widths={phone ? [320, 640] : s.wide ? [720, 1100, 1600] : [480, 800, 1200]} sizes={phone ? '(max-width: 768px) 45vw, 240px' : s.wide ? '(max-width: 1040px) 92vw, 1000px' : '(max-width: 768px) 92vw, 500px'} format="webp" quality={74} loading="lazy" /></a>
+              {s.caption && <figcaption>{s.caption}</figcaption>}
+            </figure>
+          ))}
+        </div>
+      </div>
+    </section>
+  )}
+
   <section class="section">
-    <div class="wrap">
-      <div class="section-head"><h2 class="section-title">Gallery</h2></div>
-      <div class={`shots ${phone ? 'phone' : 'wide'}`}>
-        {p.shots.map((s, i) => (
-          <figure class="shot glass" data-reveal style={`--i:${i}`}>
-            <Image src={s.src} alt={s.alt} widths={phone ? [320, 640] : [480, 800, 1200]} sizes={phone ? '(max-width: 768px) 45vw, 240px' : '(max-width: 768px) 92vw, 500px'} format="webp" quality={72} loading="lazy" />
-          </figure>
-        ))}
-      </div>
-      <div class="next">
-        <a class="btn" href={`/projects/${next.slug}/`}>Next: {next.title} &gt;</a>
-      </div>
+    <div class="wrap pager">
+      <a class="pager-link glass" href={`/projects/${prev.slug}/`}><span>&lt; Previous</span><strong>{prev.title}</strong></a>
+      <a class="pager-link glass next" href={`/projects/${next.slug}/`}><span>Next &gt;</span><strong>{next.title}</strong></a>
     </div>
   </section>
 </Base>

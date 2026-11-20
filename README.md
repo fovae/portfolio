@@ -17,16 +17,18 @@ npm run preview
 ## Structure
 
 ```
-src/data/        site.ts (nav, socials, stack), projects.ts (case studies), icons.ts
-src/components/  Header, Background, ProjectCard, SealedCard, CaseStudy, ...
-src/pages/       index, projects/somn, projects/training, 404
+src/data/        projects.ts (all case studies), site.ts (nav, socials, stack, process), icons.ts
+src/components/  Header, Background, ProjectCard, Cover, CaseStudy, art/ (SVG covers: Phantom, Transit)
+src/pages/       index, projects/[slug] (one page per project), 404
 src/scripts/     reveal, background (video), menu, cursor, clock
 src/styles/      base (tokens, cursor, reveal), hud (header, menu), sections
 src/assets/      images optimized by Astro at build (webp + srcset)
-public/          video, icons, og-image, robots.txt
+public/          video, icons, og-image.jpg, robots.txt
+scripts/og.mjs   regenerates the og-image from the SOMN key art (npm run og)
 ```
 
-Add a project: append an entry to `src/data/projects.ts` and add a page in `src/pages/projects/`.
+Add a project: append an entry to `src/data/projects.ts` (`tier: 'flagship'` for a big card, `'file'` for a
+SOMN case file). Its page is generated automatically.
 
 ## Performance notes
 

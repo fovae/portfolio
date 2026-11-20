@@ -14,6 +14,7 @@ export const site = {
 
 export const nav = [
   { label: 'Projects', href: '/#projects' },
+  { label: 'Process', href: '/#process' },
   { label: 'Stack', href: '/#stack' },
   { label: 'Contact', href: '/#contact' },
 ] as const;
@@ -32,7 +33,27 @@ export const stack = [
     items: ['TypeScript', 'Astro', 'Vite', 'Preact + Signals', 'CSS (no framework)', 'PWA / Workbox', 'IndexedDB'],
   },
   { group: 'Quality', items: ['Playwright', 'axe-core', 'ESLint', 'Prettier', 'GitHub Actions'] },
-  { group: 'Roblox', items: ['Luau', 'Roblox Studio', 'Level & UI design'] },
-  { group: 'Design', items: ['UX / UI', 'Design systems', 'Motion', 'Accessibility (WCAG AA)'] },
+  { group: 'Roblox', items: ['Luau', 'Roblox Studio', 'Procedural building', 'CollectionService', 'UI kits in code'] },
+  { group: 'Design', items: ['UX / UI', 'Design systems', 'Style guides', 'Motion', 'Accessibility (WCAG AA)', 'Art direction'] },
   { group: 'Hosting', items: ['Cloudflare Pages', 'Strict CSP'] },
+];
+
+/** How I work: each step is something the projects on this site actually do. */
+export const process = [
+  {
+    title: 'Write the source of truth',
+    text: 'Every project starts with a written concept the code must match. Simple Training has a product document; SOMN has a game concept and two style guides, Reverie for the world and Phantom for the UI.',
+  },
+  {
+    title: 'System before screens',
+    text: 'Tokens and components first, screens second. Phantom is one Luau kit that every SOMN window is built from; Simple Training draws 11 themes from one set of tokens.',
+  },
+  {
+    title: 'Budgets and audits',
+    text: 'Limits are written down and checked by scripts: parts and light sources per build phase, an audit for every region, WCAG AA contrast for every theme, translations for every language.',
+  },
+  {
+    title: 'Real devices, green CI',
+    text: 'Play-mode walks and phone checks for SOMN. Playwright on iPhone, Android and desktop profiles for Simple Training, and a pipeline that deploys only when everything passes.',
+  },
 ];

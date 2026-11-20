@@ -3,10 +3,9 @@ import { Image } from 'astro:assets';
 import Base from '../layouts/Base.astro';
 import Icon from '../components/Icon.astro';
 import ProjectCard from '../components/ProjectCard.astro';
-import SealedCard from '../components/SealedCard.astro';
 import avatar from '../assets/avatar.png';
-import { site, nav, socials, stack } from '../data/site';
-import { projects, sealed } from '../data/projects';
+import { site, nav, socials, stack, process as steps } from '../data/site';
+import { projects, flagships, caseFiles } from '../data/projects';
 
 const featured = projects[0];
 ---
@@ -50,7 +49,7 @@ const featured = projects[0];
       <aside class="hero-side" aria-label="Profile details">
         <div class="rank glass" data-reveal="right" style="--i:1">
           <div class="rank-h">
-            <span class="rank-lbl">ACTIVE PROJECTS</span>
+            <span class="rank-lbl">CASE STUDIES</span>
             <span class="mc-rank-circle">{String(projects.length).padStart(2, '0')}</span>
           </div>
           <ul class="rank-lines">
@@ -88,8 +87,8 @@ const featured = projects[0];
           <div class="term-head"><span>CORE_TELEMETRY</span><span class="term-on">ONLINE</span></div>
           <div class="term-body">
             <div class="term-row"><span>LOCATION:</span><span class="term-val">DUBLIN, IE</span></div>
-            <div class="term-row"><span>LANGUAGE:</span><span class="term-val">EN</span></div>
-            <div class="term-row"><span>PROJECTS:</span><span class="term-val">{projects.length} LIVE · {sealed.length} SEALED</span></div>
+            <div class="term-row"><span>FOCUS:</span><span class="term-val">WEB · ROBLOX</span></div>
+            <div class="term-row"><span>PROJECTS:</span><span class="term-val">{flagships.length} MAIN · {caseFiles.length} FILES</span></div>
             <div class="term-row"><span>BUILD:</span><span class="term-val">STATIC</span></div>
           </div>
           <div class="term-foot">v1.0.0<span class="blink">_</span></div>
@@ -101,22 +100,44 @@ const featured = projects[0];
   <section class="section" id="projects">
     <div class="wrap">
       <div class="section-head">
-        <h2 class="section-title">Projects</h2>
-        <span class="section-note">02 open · 03 sealed</span>
+        <h2 class="section-title">01 / Projects</h2>
+        <span class="section-note">{flagships.length} main · {caseFiles.length} case files</span>
       </div>
       <div class="proj-grid">
-        {projects.map((p, i) => <ProjectCard project={p} index={i} />)}
+        {flagships.map((p, i) => <ProjectCard project={p} index={i} />)}
       </div>
-      <div class="sealed-grid">
-        {sealed.map((s, i) => <SealedCard {...s} index={i} />)}
+      <div class="section-head sub">
+        <h3 class="section-title">SOMN case files</h3>
+        <span class="section-note">deep dives into one game</span>
       </div>
+      <div class="proj-grid files">
+        {caseFiles.map((p, i) => <ProjectCard project={p} index={i % 2} />)}
+      </div>
+    </div>
+  </section>
+
+  <section class="section" id="process">
+    <div class="wrap">
+      <div class="section-head">
+        <h2 class="section-title">02 / Process</h2>
+        <span class="section-note">how the work above was made</span>
+      </div>
+      <ol class="process">
+        {steps.map((s, i) => (
+          <li class="step glass" data-reveal style={`--i:${i}`}>
+            <span class="step-num">{String(i + 1).padStart(2, '0')}</span>
+            <h3>{s.title}</h3>
+            <p>{s.text}</p>
+          </li>
+        ))}
+      </ol>
     </div>
   </section>
 
   <section class="section" id="stack">
     <div class="wrap">
       <div class="section-head">
-        <h2 class="section-title">Stack</h2>
+        <h2 class="section-title">03 / Stack</h2>
         <span class="section-note">what I actually ship with</span>
       </div>
       <div class="stack-grid">
@@ -133,7 +154,7 @@ const featured = projects[0];
   <section class="section" id="contact">
     <div class="wrap">
       <div class="section-head">
-        <h2 class="section-title">Contact</h2>
+        <h2 class="section-title">04 / Contact</h2>
         <span class="section-note">Telegram is the fastest</span>
       </div>
       <div class="contact glass" data-reveal>

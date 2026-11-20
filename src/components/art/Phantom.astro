@@ -1,0 +1,76 @@
+---
+/* Phantom UI, recreated in SVG from the numbers in SOMN's PHANTOM_STYLE.md (REF = 400 units).
+   Inner diamond 22, core ring 11, core 5, sparkle 14 x 1.2, 8 dashes (radius 28, length 12,
+   thickness 1.8, offset 9), 4 guides (start 36, length 70) that fade out. */
+interface Props { detail?: boolean; }
+const { detail = false } = Astro.props;
+const R = 28; // outer diamond: vertex radius of the dash ring
+const diamond = (r: number) => `M0,${-r} L${r},0 L0,${r} L${-r},0 Z`;
+const side = (s: number) => s / Math.SQRT2; // vertex distance of a square of side s turned 45deg
+// two dashes on each side of the outer diamond, centred +-9 from the side midpoint
+const dashes: string[] = [];
+for (const [sx, sy] of [[1, -1], [1, 1], [-1, 1], [-1, -1]]) {
+  const ux = sx / Math.SQRT2, uy = -sy / Math.SQRT2; // along the side
+  const mx = (R / 2) * sx, my = (R / 2) * sy;
+  for (const o of [-9, 9]) {
+    const cx = mx + ux * o, cy = my + uy * o;
+    dashes.push(`M${(cx - ux * 6).toFixed(2)},${(cy - uy * 6).toFixed(2)} L${(cx + ux * 6).toFixed(2)},${(cy + uy * 6).toFixed(2)}`);
+  }
+}
+---
+<svg class="art phantom" viewBox="-200 -112.5 400 225" role="img" aria-label="Phantom reticle and UI panel, recreated from the SOMN style guide">
+  <defs>
+    <radialGradient id="ph-glow"><stop offset="0" stop-color="#AFFAFF" stop-opacity=".22" /><stop offset="1" stop-color="#AFFAFF" stop-opacity="0" /></radialGradient>
+    {([['r', 36, 0, 106, 0], ['l', -36, 0, -106, 0], ['u', 0, -36, 0, -106], ['d', 0, 36, 0, 106]] as const).map(([k, x1, y1, x2, y2]) => (
+      <linearGradient id={`ph-g-${k}`} gradientUnits="userSpaceOnUse" x1={x1} y1={y1} x2={x2} y2={y2}>
+        <stop offset="0" stop-color="#DCE1E9" stop-opacity=".9" /><stop offset="1" stop-color="#DCE1E9" stop-opacity="0" />
+      </linearGradient>
+    ))}
+    <linearGradient id="ph-bar" x1="0" x2="1"><stop offset="0" stop-color="#929AA7" /><stop offset="1" stop-color="#AFFAFF" /></linearGradient>
+    <pattern id="ph-grid" width="20" height="20" patternUnits="userSpaceOnUse"><path d="M20 0H0V20" fill="none" stroke="#DCE1E9" stroke-opacity=".035" /></pattern>
+  </defs>
+  <rect x="-200" y="-112.5" width="400" height="225" fill="#0E1015" />
+  <rect x="-200" y="-112.5" width="400" height="225" fill="url(#ph-grid)" />
+
+  <g transform={detail ? 'translate(-95 0) scale(1.15)' : 'translate(-70 0) scale(1.25)'}>
+    <circle class="ph-breathe" r="42" fill="url(#ph-glow)" />
+    <circle class="ph-breathe" r="24" fill="url(#ph-glow)" />
+    <path d="M36,0 h70" stroke="url(#ph-g-r)" />
+    <path d="M-36,0 h-70" stroke="url(#ph-g-l)" />
+    <path d="M0,-36 v-70" stroke="url(#ph-g-u)" />
+    <path d="M0,36 v70" stroke="url(#ph-g-d)" />
+    {dashes.map((p) => <path d={p} stroke="#DCE1E9" stroke-width="1.8" stroke-linecap="butt" />)}
+    <path d={diamond(side(22))} fill="#343A46" fill-opacity=".5" stroke="#DCE1E9" stroke-width="1.2" stroke-linejoin="miter" />
+    <path d={diamond(side(11))} fill="none" stroke="#929AA7" stroke-opacity=".55" stroke-width="1" />
+    <path d={diamond(side(5))} fill="#fff" />
+    <path d="M-7,0 H7 M0,-7 V7" stroke="#fff" stroke-width="1.2" opacity=".85" />
+  </g>
+
+  <!-- window panel: graphite glass, silver hairline, corner brackets, sharp corners -->
+  <g transform={detail ? 'translate(10 -70)' : 'translate(40 -62)'} font-family="'Space Grotesk Variable', sans-serif">
+    <rect width="150" height="124" fill="#0E1015" fill-opacity=".92" stroke="#DCE1E9" stroke-opacity=".5" />
+    <path d="M-4,10 V-4 H10 M140,-4 H154 V10 M154,114 V128 H140 M10,128 H-4 V114" fill="none" stroke="#DCE1E9" stroke-opacity=".9" />
+    <text x="12" y="20" fill="#F0F2F6" font-size="10" font-weight="800" letter-spacing="1.5">PROFILE</text>
+    <path d="M128,13 l4,4 M132,13 l-4,4" stroke="#C4CAD4" />
+    <path d="M12,28 H138" stroke="#DCE1E9" stroke-opacity=".25" />
+    <g font-size="4.8" font-weight="700" letter-spacing=".3">
+      <text x="12" y="39" fill="#F0F2F6">OVERVIEW</text>
+      <path d="M12,42 H38" stroke="#AFFAFF" />
+      <text x="46" y="39" fill="#929AA7">PATHS</text>
+      <text x="67" y="39" fill="#929AA7">ACHIEVEMENTS</text>
+      <text x="117" y="39" fill="#929AA7">TITLES</text>
+    </g>
+    <path d="M28,52 l12,12 l-12,12 l-12,-12 Z" fill="#343A46" stroke="#DCE1E9" stroke-width=".8" />
+    <text x="48" y="62" fill="#F0F2F6" font-size="7" font-weight="700">DREAMER</text>
+    <text x="48" y="71" fill="#929AA7" font-size="5">TRAVELER · AURORA</text>
+    <rect x="12" y="88" width="126" height="3" fill="#343A46" />
+    <rect x="12" y="88" width="84" height="3" fill="url(#ph-bar)" />
+    <text x="12" y="84" fill="#C4CAD4" font-size="5" letter-spacing=".5">PATH PROGRESS</text>
+    <g transform="translate(12 100)">
+      <rect width="58" height="14" fill="#DCE1E9" />
+      <text x="29" y="9.6" text-anchor="middle" fill="#0E1015" font-size="5.5" font-weight="800" letter-spacing=".8">EQUIP TITLE</text>
+      <rect x="64" width="62" height="14" fill="#0E1015" fill-opacity=".75" stroke="#DCE1E9" stroke-opacity=".5" />
+      <text x="95" y="9.6" text-anchor="middle" fill="#F0F2F6" font-size="5.5" font-weight="800" letter-spacing=".8">VIEW PATHS</text>
+    </g>
+  </g>
+</svg>

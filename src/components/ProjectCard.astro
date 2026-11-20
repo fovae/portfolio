@@ -1,12 +1,13 @@
 ---
-import { Image } from 'astro:assets';
 import type { Project } from '../data/projects';
+import Cover from './Cover.astro';
 interface Props { project: Project; index?: number; }
 const { project: p, index = 0 } = Astro.props;
+const small = p.tier === 'file';
 ---
-<a class="pcard glass" href={`/projects/${p.slug}/`} data-reveal style={`--i:${index}`}>
-  <div class={`pcard-media ${p.shotsKind === 'phone' ? 'phone' : ''}`}>
-    <Image src={p.cover} alt={p.coverAlt} widths={[480, 720, 1000]} sizes="(max-width: 768px) 92vw, 500px" format="webp" quality={72} loading="lazy" />
+<a class={`pcard glass ${small ? 'small' : ''}`} href={`/projects/${p.slug}/`} data-reveal style={`--i:${index}`}>
+  <div class={`pcard-media ${p.shotsKind === 'phone' && !p.art ? 'phone' : ''}`}>
+    <Cover project={p} widths={small ? [400, 640, 900] : [480, 720, 1000]} sizes={small ? '(max-width: 768px) 92vw, 500px' : '(max-width: 768px) 92vw, 500px'} />
   </div>
   <div class="pcard-body">
     <div class="pcard-top">
@@ -15,6 +16,11 @@ const { project: p, index = 0 } = Astro.props;
     </div>
     <h3>{p.title}</h3>
     <p>{p.summary}</p>
-    <ul class="tags">{p.tags.map((t) => <li class="tag">{t}</li>)}</ul>
+    {!small && <ul class="tags">{p.tags.map((t) => <li class="tag">{t}</li>)}</ul>}
+    {small && (
+      <dl class="mini-stats">
+        {p.stats.slice(0, 2).map((s) => <div><dt>{s.value}</dt><dd>{s.label}</dd></div>)}
+      </dl>
+    )}
   </div>
 </a>

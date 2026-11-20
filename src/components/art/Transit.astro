@@ -1,0 +1,38 @@
+---
+/* SOMN map, drawn from real coordinates in the project notes: 2040 x 2040 studs, 3 x 3 grid
+   (cell 680), north = -Z. The SOMN Loop bus ring through its 12 corners is 6840 studs long. */
+const corners: [number, number][] = [
+  [-315, 315], [315, 315], [315, 675], [675, 675], [675, -675], [315, -675],
+  [315, -315], [-315, -315], [-315, -675], [-675, -675], [-675, 675], [-315, 675],
+];
+const route = 'M' + corners.map(([x, z]) => `${x},${z}`).join(' L') + ' Z';
+const length = corners.reduce((sum, [x, z], i) => {
+  const [nx, nz] = corners[(i + 1) % corners.length];
+  return sum + Math.abs(nx - x) + Math.abs(nz - z);
+}, 0);
+const regions = [
+  { name: 'OBSIDIAN', d: 'M-1020,-1020 H0 V-340 H-340 V340 H-1020 Z', fill: '#2a0f1e', lx: -680, lz: -840 },
+  { name: 'VELORA', d: 'M0,-1020 H1020 V340 H340 V-340 H0 Z', fill: '#1d1236', lx: 680, lz: -840 },
+  { name: 'AURORA', d: 'M-1020,340 H1020 V1020 H-1020 Z', fill: '#0f2333', lx: 0, lz: 900 },
+  { name: 'PLAZA', d: 'M-340,-340 H340 V340 H-340 Z', fill: '#2b1730', lx: 0, lz: 190 },
+];
+---
+<svg class="art transit" viewBox="-1300 -1180 2600 2360" role="img" aria-label={`Map of SOMN with three regions around the Plaza and the SOMN Loop bus ring, ${length} studs`}>
+  <rect x="-1300" y="-1180" width="2600" height="2360" fill="#07060b" />
+  <g stroke="#ffadfe" stroke-opacity=".05" stroke-width="3">
+    {[-1020, -340, 340, 1020].map((v) => <><path d={`M${v},-1020 V1020`} /><path d={`M-1020,${v} H1020`} /></>)}
+  </g>
+  {regions.map((r) => <path d={r.d} fill={r.fill} stroke="#ffadfe" stroke-opacity=".18" stroke-width="4" />)}
+  <path d="M0,-1020 V-340" stroke="#ffadfe" stroke-opacity=".35" stroke-width="6" stroke-dasharray="30 20" />
+  <path class="tr-route" d={route} fill="none" stroke="#ffadfe" stroke-opacity=".35" stroke-width="22" stroke-linejoin="round" />
+  <path class="tr-flow" d={route} fill="none" stroke="#fff" stroke-width="10" stroke-dasharray="60 300" stroke-linejoin="round" />
+  <path class="tr-flow rev" d={route} fill="none" stroke="#AFFAFF" stroke-width="10" stroke-dasharray="60 300" stroke-linejoin="round" />
+  {corners.map(([x, z]) => <rect x={x - 16} y={z - 16} width="32" height="32" transform={`rotate(45 ${x} ${z})`} fill="#07060b" stroke="#ffadfe" stroke-width="6" />)}
+  <circle cx="0" cy="0" r="70" fill="none" stroke="#ffadfe" stroke-width="6" />
+  <circle cx="0" cy="0" r="20" fill="#ffadfe" />
+  <g font-family="'JetBrains Mono Variable', monospace" fill="#fff3ff" text-anchor="middle" letter-spacing="14">
+    {regions.map((r) => <text x={r.lx} y={r.lz} font-size={r.name === 'PLAZA' ? 64 : 88} font-weight="700" opacity=".9">{r.name}</text>)}
+    <text x="0" y="-1080" font-size="54" fill="#b4b0b4" letter-spacing="10">SEAM AVENUE · N</text>
+    <text x="0" y="1130" font-size="56" fill="#ffadfe">SOMN LOOP · {length.toLocaleString('en-US')} STUDS</text>
+  </g>
+</svg>
